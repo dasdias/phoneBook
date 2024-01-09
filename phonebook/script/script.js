@@ -87,6 +87,7 @@ const data = [
       <th>Имя</th>
       <th>Фамилия</th>
       <th>Телефон</th>
+      <th></th>
     </tr>
     `);
 
@@ -135,6 +136,7 @@ const data = [
         text: 'Отмена',
       },
     ]);
+    console.log('buttonGroup: ', buttonGroup);
 
     form.append(...buttonGroup.btns);
     overlay.append(form);
@@ -207,15 +209,24 @@ const data = [
     tdDel.append(buttonDel);
     const tdName = document.createElement('td');
     tdName.textContent = firstName;
+
     const tdSurname = document.createElement('td');
     tdSurname.textContent = surname;
+
     const tdPhone = document.createElement('td');
     const phoneLink = document.createElement('a');
     phoneLink.href = `tel:${phone}`;
     phoneLink.textContent = phone;
     tr.phoneLink = phoneLink;
     tdPhone.append(phoneLink);
-    tr.append(tdDel, tdName, tdSurname, tdPhone);
+
+    const tdEdit = document.createElement('td');
+    const buttonEdit = document.createElement('button');
+    buttonEdit.innerHTML = '&#9998;';
+    tdEdit.append(buttonEdit);
+    buttonEdit.classList.add('btn', 'btn-info');
+
+    tr.append(tdDel, tdName, tdSurname, tdPhone, tdEdit);
 
     return tr;
   };
