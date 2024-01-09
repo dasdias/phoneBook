@@ -1,3 +1,5 @@
+'use strict';
+
 const data = [
   {
     name: 'Иван',
@@ -192,6 +194,7 @@ const data = [
       logo,
       btnAdd: buttonGroup.btns[0],
       formOverlay: form.overlay,
+      form: form.form,
     };
   };
 
@@ -241,7 +244,7 @@ const data = [
     const phoneBook = renderPhoneBook(app, title);
 
     const {list, logo,
-      btnAdd, formOverlay} = phoneBook; // в list содержится tbody
+      btnAdd, formOverlay, form} = phoneBook; // в list содержится tbody
     const allRow = renderContacts(list, data);
 
     hoverRow(allRow, logo);
@@ -253,6 +256,14 @@ const data = [
     };
 
     btnAdd.addEventListener('click', objEvent);
+
+    form.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+
+    formOverlay.addEventListener('click', () => {
+      formOverlay.classList.remove('is-visible');
+    });
   };
   window.phoneBookInit = init;
 }
