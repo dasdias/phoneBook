@@ -136,7 +136,6 @@ const data = [
         text: 'Отмена',
       },
     ]);
-    console.log('buttonGroup: ', buttonGroup);
 
     form.append(...buttonGroup.btns);
     overlay.append(form);
@@ -195,6 +194,7 @@ const data = [
       list: table.tbody,
       logo,
       btnAdd: buttonGroup.btns[0],
+      btnDel: buttonGroup.btns[1],
       formOverlay: form.overlay,
       form: form.form,
     };
@@ -202,6 +202,7 @@ const data = [
 
   const createRow = ({name: firstName, surname, phone}) => {
     const tr = document.createElement('tr');
+    tr.classList.add('contact');
     const tdDel = document.createElement('td');
     const buttonDel = document.createElement('button');
     tdDel.classList.add('delete');
@@ -240,7 +241,6 @@ const data = [
   const hoverRow = (allRow, logo) => {
     const text = logo.textContent;
     allRow.forEach(contact => {
-      console.log('contact: ', contact);
       contact.addEventListener('mouseenter', () => {
         logo.textContent = contact.phoneLink.textContent;
       });
@@ -254,8 +254,14 @@ const data = [
     const app = document.querySelector(selectorApp);
     const phoneBook = renderPhoneBook(app, title);
 
-    const {list, logo,
-      btnAdd, formOverlay, form} = phoneBook; // в list содержится tbody
+    const {
+      list,
+      logo,
+      btnAdd,
+      formOverlay,
+      form,
+      btnDel,
+    } = phoneBook; // в list содержится tbody
     const allRow = renderContacts(list, data);
 
     hoverRow(allRow, logo);
@@ -268,13 +274,32 @@ const data = [
 
     btnAdd.addEventListener('click', objEvent);
 
-    form.addEventListener('click', (event) => {
-      event.stopPropagation();
+    formOverlay.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target === formOverlay || target.closest('.close')) {
+        formOverlay.classList.remove('is-visible');
+      }
     });
 
-    formOverlay.addEventListener('click', () => {
-      formOverlay.classList.remove('is-visible');
+    btnDel.addEventListener('click', () => {
+      document.querySelectorAll('.delete').forEach(del => {
+        del.classList.toggle('is-visible');
+      });
+      list.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target.closest('.del-icon')) {
+          target.closest('.contact').remove();
+        }
+      });
     });
+    setTimeout(() => {
+      const contact = createRow({
+        name: 'Alex',
+        surname: 'Fix',
+        phone: '+79030010101',
+      });
+      list.append(contact);
+    }, 2000);
   };
   window.phoneBookInit = init;
 }
