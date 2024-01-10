@@ -7,6 +7,11 @@ const data = [
     phone: '+79514545454',
   },
   {
+    name: 'Григорий',
+    surname: 'Дмитриев',
+    phone: '+79999999999',
+  },
+  {
     name: 'Игорь',
     surname: 'Семёнов',
     phone: '+79999999999',
@@ -20,6 +25,16 @@ const data = [
     name: 'Мария',
     surname: 'Попова',
     phone: '+79876543210',
+  },
+  {
+    name: 'Валентин',
+    surname: 'Абрамов',
+    phone: '+79876543210',
+  },
+  {
+    name: 'Александр',
+    surname: 'Шилов',
+    phone: '+79876545654',
   },
 ];
 
@@ -209,9 +224,11 @@ const data = [
     buttonDel.classList.add('del-icon');
     tdDel.append(buttonDel);
     const tdName = document.createElement('td');
+    tdName.classList.add('table_name');
     tdName.textContent = firstName;
 
     const tdSurname = document.createElement('td');
+    tdSurname.classList.add('table_surname');
     tdSurname.textContent = surname;
 
     const tdPhone = document.createElement('td');
@@ -300,6 +317,30 @@ const data = [
       });
       list.append(contact);
     }, 2000);
+
+    list.addEventListener('click', (e) => {
+      const target = e.target;
+      const sortName = (x, y) => {
+        if (x < y) {
+          return -1;
+        }
+        if (x > y) {
+          return 1;
+        }
+        return 0;
+      };
+
+      if (target.closest('.table_name')) {
+        const sotrElem = data.sort((x, y) => sortName(x.name, y.name));
+        list.textContent = '';
+        renderContacts(list, sotrElem);
+      }
+      if (target.closest('.table_surname')) {
+        const sotrElem = data.sort((x, y) => sortName(x.surname, y.surname));
+        list.textContent = '';
+        renderContacts(list, sotrElem);
+      }
+    });
   };
   window.phoneBookInit = init;
 }
