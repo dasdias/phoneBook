@@ -39,9 +39,39 @@ const data = [
 ];
 
 {
-  const addContactData = (contact) => {
-    data.push(contact);
+  const getStorage = (key) => {
+    const dataStorage = [];
+    JSON.parse(localStorage.getItem(key)) ?
+      dataStorage.push(JSON.parse(localStorage.getItem(key))) : [];
+
+    return dataStorage;
   };
+
+  const setStorage = (key, obj) => {
+    const storageData = [];
+    // проверяем в хранилище данные, если данные есть,
+    // то получаем и дописываем новые
+    console.log('getStorage(key)', getStorage(key));
+    if (getStorage(key).length !== 0) {
+      // storageData.push(getStorage(key));
+      // storageData.push(obj);
+      // localStorage.setItem(key, JSON.stringify(storageData));
+      // console.log('storageData: ', storageData);
+    } else { // записываем с localstorage
+      const dataForm = storageData.push(obj);
+      console.log('dataForm: ', dataForm);
+      localStorage.setItem(key, JSON.stringify(dataForm));
+    }
+    console.log('data: ', data);
+  };
+
+  const removeStorage = () => {
+
+  };
+
+  // const addContactData = (contact) => {
+  //   data.push(contact);
+  // };
 
   const createContainer = () => {
     const container = document.createElement('div');
@@ -343,9 +373,10 @@ const data = [
       e.preventDefault();
       const formData = new FormData(e.target);
       const newContact = Object.fromEntries(formData);
-      console.log('newContact: ', newContact);
+      // console.log('newContact: ', newContact);
       addContactPage(newContact, list);
-      addContactData(newContact);
+      // addContactData(newContact);
+      setStorage('userData', JSON.stringify(newContact));
       form.reset();
       closeModal();
     });
