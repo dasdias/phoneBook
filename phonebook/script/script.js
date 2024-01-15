@@ -1,42 +1,42 @@
 'use strict';
 
-const data = [
-  {
-    name: 'Иван',
-    surname: 'Петров',
-    phone: '+79514545454',
-  },
-  {
-    name: 'Григорий',
-    surname: 'Дмитриев',
-    phone: '+79999999999',
-  },
-  {
-    name: 'Игорь',
-    surname: 'Семёнов',
-    phone: '+79999999999',
-  },
-  {
-    name: 'Семён',
-    surname: 'Иванов',
-    phone: '+79800252525',
-  },
-  {
-    name: 'Мария',
-    surname: 'Попова',
-    phone: '+79876543210',
-  },
-  {
-    name: 'Валентин',
-    surname: 'Абрамов',
-    phone: '+79876543210',
-  },
-  {
-    name: 'Александр',
-    surname: 'Шилов',
-    phone: '+79876545654',
-  },
-];
+// const data = [
+//   {
+//     name: 'Иван',
+//     surname: 'Петров',
+//     phone: '+79514545454',
+//   },
+//   {
+//     name: 'Григорий',
+//     surname: 'Дмитриев',
+//     phone: '+79999999999',
+//   },
+//   {
+//     name: 'Игорь',
+//     surname: 'Семёнов',
+//     phone: '+79999999999',
+//   },
+//   {
+//     name: 'Семён',
+//     surname: 'Иванов',
+//     phone: '+79800252525',
+//   },
+//   {
+//     name: 'Мария',
+//     surname: 'Попова',
+//     phone: '+79876543210',
+//   },
+//   {
+//     name: 'Валентин',
+//     surname: 'Абрамов',
+//     phone: '+79876543210',
+//   },
+//   {
+//     name: 'Александр',
+//     surname: 'Шилов',
+//     phone: '+79876545654',
+//   },
+// ];
 
 {
   const getStorage = (key) => {
@@ -47,35 +47,24 @@ const data = [
 
   const setStorage = (key, obj) => {
     let storageData = [];
-    // проверяем в хранилище данные, если данные есть,
-    // то получаем и дописываем новые
-    console.log(getStorage(key));
-    console.log('getStorage(key).length: ', getStorage(key).length);
     if (getStorage(key).length !== 0) {
-      // if (typeof getStorage(key) === ma) {
-
-      // }
       storageData = [...getStorage(key), obj];
-      // storageData.push(getStorage(key));
-      // storageData.push(obj);
       localStorage.setItem(key, JSON.stringify(storageData));
-    } else { // записываем с localstorage
+    } else {
       storageData.push(obj);
       localStorage.setItem(key, JSON.stringify(storageData));
     }
-    console.log('data: ', data);
   };
 
   const removeStorage = (phoneNum) => {
     const store = getStorage('userData');
-    const newMass = store.filter((item) => item.phone !== phoneNum);
-    localStorage.removeItem('userData');
-    localStorage.setItem('userData', JSON.stringify(newMass));
+    if (store.length !== 0) {
+      const newMass = store.filter((item) => item.phone !== phoneNum);
+      localStorage.removeItem('userData');
+      localStorage.setItem('userData', JSON.stringify(newMass));
+    }
+    return;
   };
-  removeStorage('7777');
-  // const addContactData = (contact) => {
-  //   data.push(contact);
-  // };
 
   const createContainer = () => {
     const container = document.createElement('div');
@@ -397,7 +386,7 @@ const data = [
       form,
       btnDel,
     } = renderPhoneBook(app, title); // в list содержится tbody
-    const allRow = renderContacts(list, data);
+    const allRow = renderContacts(list, getStorage('userData'));
     const {closeModal} = modalControl(btnAdd, formOverlay);
 
     hoverRow(allRow, logo);
