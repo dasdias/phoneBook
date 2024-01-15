@@ -40,35 +40,39 @@ const data = [
 
 {
   const getStorage = (key) => {
-    const dataStorage = [];
-    JSON.parse(localStorage.getItem(key)) ?
-      dataStorage.push(JSON.parse(localStorage.getItem(key))) : [];
-
+    const dataStorage = JSON.parse(localStorage.getItem(key)) ?
+      JSON.parse(localStorage.getItem(key)) : [];
     return dataStorage;
   };
 
   const setStorage = (key, obj) => {
-    const storageData = [];
+    let storageData = [];
     // проверяем в хранилище данные, если данные есть,
     // то получаем и дописываем новые
-    console.log('getStorage(key)', getStorage(key));
+    console.log(getStorage(key));
+    console.log('getStorage(key).length: ', getStorage(key).length);
     if (getStorage(key).length !== 0) {
+      // if (typeof getStorage(key) === ma) {
+
+      // }
+      storageData = [...getStorage(key), obj];
       // storageData.push(getStorage(key));
       // storageData.push(obj);
-      // localStorage.setItem(key, JSON.stringify(storageData));
-      // console.log('storageData: ', storageData);
+      localStorage.setItem(key, JSON.stringify(storageData));
     } else { // записываем с localstorage
-      const dataForm = storageData.push(obj);
-      console.log('dataForm: ', dataForm);
-      localStorage.setItem(key, JSON.stringify(dataForm));
+      storageData.push(obj);
+      localStorage.setItem(key, JSON.stringify(storageData));
     }
     console.log('data: ', data);
   };
 
-  const removeStorage = () => {
-
+  const removeStorage = (phoneNum) => {
+    const store = getStorage('userData');
+    const newMass = store.filter((item) => item.phone !== phoneNum);
+    localStorage.removeItem('userData');
+    localStorage.setItem('userData', JSON.stringify(newMass));
   };
-
+  removeStorage('7777');
   // const addContactData = (contact) => {
   //   data.push(contact);
   // };
@@ -376,7 +380,7 @@ const data = [
       // console.log('newContact: ', newContact);
       addContactPage(newContact, list);
       // addContactData(newContact);
-      setStorage('userData', JSON.stringify(newContact));
+      setStorage('userData', newContact);
       form.reset();
       closeModal();
     });
