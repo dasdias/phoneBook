@@ -324,15 +324,29 @@
     });
 
     list.addEventListener('click', (e) => {
+      const elemStorage = getStorage('userData');
       const target = e.target;
       if (target.closest('.del-icon')) {
-        target.closest('.contact').remove();
+        if (elemStorage.length === 1) {
+          document.querySelectorAll('.delete').forEach(del => {
+            del.classList.remove('is-visible');
+          });
+        }
+        const parent = target.closest('.contact');
+        const phoneNum = parent?.querySelector('a[href^="tel:"]');
+        removeStorage(phoneNum.textContent);
+        parent.remove();
       }
     });
   };
 
   const filterControl = (list) => {
     list.addEventListener('click', (e) => {
+      const data = getStorage('userData');
+      const isVisible = [...document.querySelectorAll('.is-visible')];
+      if (isVisible.length !== 0) {
+        return;
+      }
       const target = e.target;
       const sortName = (x, y) => {
         if (x < y) {
@@ -366,9 +380,7 @@
       e.preventDefault();
       const formData = new FormData(e.target);
       const newContact = Object.fromEntries(formData);
-      // console.log('newContact: ', newContact);
       addContactPage(newContact, list);
-      // addContactData(newContact);
       setStorage('userData', newContact);
       form.reset();
       closeModal();
