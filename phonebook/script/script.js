@@ -62,6 +62,7 @@
       const newMass = store.filter((item) => item.phone !== phoneNum);
       localStorage.removeItem('userData');
       localStorage.setItem('userData', JSON.stringify(newMass));
+      console.log('remove');
     }
     return;
   };
