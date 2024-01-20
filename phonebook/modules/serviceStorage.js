@@ -1,5 +1,3 @@
-'use strict';
-
 const getStorage = (key) => {
   const dataStorage = JSON.parse(localStorage.getItem(key)) ?
       JSON.parse(localStorage.getItem(key)) : [];
@@ -27,7 +25,7 @@ const removeStorage = (phoneNum) => {
   return;
 };
 
-module.exports = {
+export default {
   getStorage,
   setStorage,
   removeStorage,

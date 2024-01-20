@@ -1,20 +1,9 @@
-'use strict';
+import renderContacts from './render.js';
+import createRow from './createElements.js';
+import {getStorage, setStorage, removeStorage} from
+  '../modules/serviceStorage.js';
 
-const {
-  renderContacts,
-} = require('./render');
-
-const {
-  getStorage,
-  setStorage,
-  removeStorage,
-} = require('./serviceStorage');
-
-const {
-  createRow,
-} = require('./createElements');
-
-const modalControl = (btnAdd, formOverlay) => {
+export const modalControl = (btnAdd, formOverlay) => {
   const openModal = () => {
     formOverlay.classList.add('is-visible');
   };
@@ -36,7 +25,7 @@ const modalControl = (btnAdd, formOverlay) => {
   };
 };
 
-const deleteControl = (btnDel, list) => {
+export const deleteControl = (btnDel, list) => {
   btnDel.addEventListener('click', () => {
     document.querySelectorAll('.delete').forEach(del => {
       del.classList.toggle('is-visible');
@@ -60,7 +49,7 @@ const deleteControl = (btnDel, list) => {
   });
 };
 
-const filterControl = (list) => {
+export const filterControl = (list) => {
   list.addEventListener('click', (e) => {
     const data = getStorage('userData');
     const isVisible = [...document.querySelectorAll('.is-visible')];
@@ -91,11 +80,11 @@ const filterControl = (list) => {
   });
 };
 
-const addContactPage = (сontact, list) => {
+export const addContactPage = (сontact, list) => {
   list.append(createRow(сontact));
 };
 
-const formControl = (form, list, closeModal) => {
+export const formControl = (form, list, closeModal) => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -107,7 +96,7 @@ const formControl = (form, list, closeModal) => {
   });
 };
 
-const hoverRow = (allRow, logo) => {
+export const hoverRow = (allRow, logo) => {
   const text = logo.textContent;
   allRow.forEach(contact => {
     contact.addEventListener('mouseenter', () => {
@@ -117,14 +106,4 @@ const hoverRow = (allRow, logo) => {
       logo.textContent = text;
     });
   });
-};
-
-
-module.exports = {
-  modalControl,
-  deleteControl,
-  filterControl,
-  addContactPage,
-  formControl,
-  hoverRow,
 };
